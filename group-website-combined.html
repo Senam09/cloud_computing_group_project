@@ -1,0 +1,445 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>[GROUP NAME] — Project Site</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600&family=Lora:ital,wght@0,400;0,600;1,400&family=Space+Grotesk:wght@500;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --paper: #edeae2;
+    --paper-2: #e2ddd0;
+    --ink: #1f2b2e;
+    --ink-soft: #4a5a57;
+    --accent: #2f6f4e;
+    --highlight: #f2b84b;
+    --white: #faf9f6;
+    --muted: #8a9590;
+    --radius: 10px;
+    --max-width: 880px;
+
+    --font-display: "Space Grotesk", sans-serif;
+    --font-body: "Lora", serif;
+    --font-mono: "JetBrains Mono", monospace;
+  }
+
+  * { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; }
+
+  body {
+    font-family: var(--font-body);
+    background: var(--paper);
+    color: var(--ink);
+    line-height: 1.6;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+  }
+
+  a { color: var(--accent); }
+  img { max-width: 100%; display: block; }
+
+  .wrapper {
+    max-width: var(--max-width);
+    margin: 0 auto;
+    padding: 0 24px;
+    width: 100%;
+  }
+
+  /* Folder-tab navigation */
+  .tabs { background: var(--paper-2); border-bottom: 2px solid var(--ink); }
+
+  .tabs__inner {
+    max-width: var(--max-width);
+    margin: 0 auto;
+    padding: 18px 24px 0;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: flex-end;
+    gap: 10px;
+  }
+
+  .tabs__label {
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
+    letter-spacing: 0.08em;
+    color: var(--muted);
+    margin-right: 8px;
+    padding-bottom: 12px;
+    text-transform: uppercase;
+  }
+
+  .tabs nav { display: flex; gap: 6px; flex-wrap: wrap; }
+
+  .tab {
+    font-family: var(--font-mono);
+    font-size: 0.85rem;
+    text-decoration: none;
+    color: var(--ink-soft);
+    background: var(--paper);
+    border: 2px solid var(--ink);
+    border-bottom: none;
+    border-radius: 8px 8px 0 0;
+    padding: 10px 16px;
+    position: relative;
+    top: 2px;
+    cursor: pointer;
+    transition: background 0.15s ease, color 0.15s ease, top 0.15s ease;
+  }
+
+  .tab:hover { color: var(--ink); background: var(--white); }
+
+  .tab--active {
+    background: var(--white);
+    color: var(--ink);
+    font-weight: 600;
+    top: 0;
+    border-bottom: 2px solid var(--white);
+    margin-bottom: -2px;
+  }
+
+  /* Main content */
+  main { background: var(--white); flex: 1; }
+  main .wrapper { padding-top: 48px; padding-bottom: 64px; }
+
+  .page { display: none; }
+  .page--active { display: block; }
+
+  h1, h2, h3 { font-family: var(--font-display); line-height: 1.15; margin-top: 0; }
+  h1 { font-size: clamp(2.2rem, 5vw, 3.4rem); letter-spacing: -0.01em; }
+  h2 { font-size: clamp(1.4rem, 3vw, 1.9rem); margin-top: 0; }
+
+  .eyebrow {
+    font-family: var(--font-mono);
+    font-size: 0.8rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 6px;
+  }
+
+  .lede { font-size: 1.1rem; color: var(--ink-soft); max-width: 60ch; }
+
+  /* Hero (home page) */
+  .hero { display: grid; gap: 32px; align-items: center; grid-template-columns: 1.2fr 1fr; }
+
+  .hero-img {
+    width: 100%;
+    border: 2px solid var(--ink);
+    border-radius: var(--radius);
+    background: var(--paper);
+  }
+
+  @media (max-width: 700px) { .hero { grid-template-columns: 1fr; } }
+
+  /* Facts strip */
+  .facts {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    margin-top: 40px;
+    padding-top: 24px;
+    border-top: 1px solid var(--paper-2);
+  }
+
+  .facts__item {
+    font-family: var(--font-mono);
+    font-size: 0.8rem;
+    background: var(--paper);
+    border: 1px solid var(--paper-2);
+    border-radius: 6px;
+    padding: 8px 12px;
+    color: var(--ink-soft);
+  }
+
+  .facts__item strong { color: var(--ink); }
+
+  /* Cards (team grid) */
+  .card-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap: 16px;
+    margin-top: 24px;
+  }
+
+  .card { border: 2px solid var(--ink); border-radius: var(--radius); padding: 18px; background: var(--paper); }
+  .card h3 { font-size: 1.1rem; margin: 10px 0 0; }
+
+  .tag {
+    display: inline-block;
+    font-family: var(--font-mono);
+    font-size: 0.7rem;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    background: var(--highlight);
+    color: var(--ink);
+    border-radius: 999px;
+    padding: 4px 10px;
+  }
+
+  /* Contact page */
+  .contact-grid { display: grid; grid-template-columns: 1fr 1.3fr; gap: 32px; margin-top: 24px; }
+  @media (max-width: 700px) { .contact-grid { grid-template-columns: 1fr; } }
+
+  .contact-info dl { display: grid; grid-template-columns: auto 1fr; gap: 8px 16px; font-size: 0.95rem; }
+  .contact-info dt { font-family: var(--font-mono); font-size: 0.75rem; text-transform: uppercase; color: var(--muted); align-self: center; }
+
+  .contact-form { display: flex; flex-direction: column; gap: 12px; }
+
+  .contact-form label {
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    color: var(--ink-soft);
+  }
+
+  .contact-form input,
+  .contact-form textarea {
+    font-family: var(--font-body);
+    font-size: 1rem;
+    padding: 10px 12px;
+    border: 2px solid var(--ink);
+    border-radius: 6px;
+    background: var(--paper);
+    color: var(--ink);
+  }
+
+  .contact-form button {
+    font-family: var(--font-mono);
+    font-size: 0.85rem;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    background: var(--accent);
+    color: var(--white);
+    border: 2px solid var(--accent);
+    border-radius: 6px;
+    padding: 12px 18px;
+    cursor: pointer;
+    transition: opacity 0.15s ease;
+    align-self: flex-start;
+  }
+
+  .contact-form button:hover { opacity: 0.85; }
+
+  #form-status { font-family: var(--font-mono); font-size: 0.85rem; color: var(--accent); min-height: 1.2em; }
+
+  /* Footer */
+  footer { background: var(--paper-2); border-top: 2px solid var(--ink); }
+
+  footer .wrapper {
+    padding: 20px 24px;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    gap: 8px;
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
+    color: var(--ink-soft);
+  }
+
+  /* Focus states (accessibility) */
+  a:focus-visible, button:focus-visible, input:focus-visible, textarea:focus-visible {
+    outline: 3px solid var(--highlight);
+    outline-offset: 2px;
+  }
+</style>
+</head>
+<body>
+
+  <header class="tabs">
+    <div class="tabs__inner">
+      <span class="tabs__label">project files /</span>
+      <nav aria-label="Main navigation">
+        <a href="#home" class="tab tab--active" data-page="home">index.html</a>
+        <a href="#about" class="tab" data-page="about">about.html</a>
+        <a href="#contact" class="tab" data-page="contact">contact.html</a>
+      </nav>
+    </div>
+  </header>
+
+  <main>
+    <div class="wrapper">
+
+      <!-- HOME PAGE -->
+      <section id="home" class="page page--active">
+        <div class="hero">
+          <div>
+            <p class="eyebrow">[COURSE TITLE] · Group Project</p>
+            <h1>[GROUP NAME]</h1>
+            <p class="lede">
+              [Write a short (2–3 sentence) description of your project here. Explain what
+              the website is about, what your group built, and what visitors can find on it.]
+            </p>
+          </div>
+          <svg class="hero-img" viewBox="0 0 400 300" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Illustration of three stacked file cards representing the project's pages">
+            <rect width="400" height="300" fill="#edeae2"/>
+            <g transform="translate(40,60) rotate(-6)">
+              <rect width="220" height="150" rx="10" fill="#e2ddd0" stroke="#1f2b2e" stroke-width="2"/>
+            </g>
+            <g transform="translate(70,40) rotate(3)">
+              <rect width="240" height="160" rx="10" fill="#faf9f6" stroke="#1f2b2e" stroke-width="2"/>
+              <rect x="20" y="24" width="120" height="12" rx="3" fill="#2f6f4e"/>
+              <rect x="20" y="50" width="180" height="8" rx="3" fill="#8a9590"/>
+              <rect x="20" y="68" width="160" height="8" rx="3" fill="#8a9590"/>
+              <rect x="20" y="86" width="140" height="8" rx="3" fill="#8a9590"/>
+              <circle cx="210" cy="120" r="18" fill="#f2b84b" stroke="#1f2b2e" stroke-width="2"/>
+            </g>
+            <g transform="translate(110,90) rotate(-2)">
+              <rect width="200" height="130" rx="10" fill="#faf9f6" stroke="#1f2b2e" stroke-width="2"/>
+              <rect x="18" y="20" width="90" height="10" rx="3" fill="#2f6f4e"/>
+              <rect x="18" y="44" width="160" height="8" rx="3" fill="#1f2b2e" opacity="0.7"/>
+              <rect x="18" y="62" width="140" height="8" rx="3" fill="#8a9590"/>
+              <rect x="18" y="80" width="100" height="8" rx="3" fill="#8a9590"/>
+              <rect x="18" y="102" width="70" height="18" rx="4" fill="#f2b84b" stroke="#1f2b2e" stroke-width="2"/>
+            </g>
+          </svg>
+        </div>
+
+        <div class="facts">
+          <span class="facts__item"><strong>Course:</strong> [COURSE TITLE]</span>
+          <span class="facts__item"><strong>Group:</strong> [GROUP NAME]</span>
+          <span class="facts__item"><strong>Members:</strong> [NUMBER] students</span>
+          <span class="facts__item"><strong>Built with:</strong> HTML, CSS, JavaScript</span>
+        </div>
+      </section>
+
+      <!-- ABOUT PAGE -->
+      <section id="about" class="page">
+        <p class="eyebrow">About this project</p>
+        <h1>Who we are</h1>
+        <p class="lede">
+          [Write a longer description of your project here: what topic it covers,
+          why your group chose it, and what each of you learned while building it
+          for <strong>[COURSE TITLE]</strong>.]
+        </p>
+
+        <h2 style="margin-top: 40px;">Meet the team</h2>
+        <div class="card-grid">
+          <div class="card">
+            <span class="tag">Group Leader</span>
+            <h3>[Member Name 1]</h3>
+          </div>
+          <div class="card">
+            <span class="tag">Repo Manager</span>
+            <h3>[Member Name 2]</h3>
+          </div>
+          <div class="card">
+            <span class="tag">Design &amp; Content</span>
+            <h3>[Member Name 3]</h3>
+          </div>
+          <div class="card">
+            <span class="tag">Design &amp; Content</span>
+            <h3>[Member Name 4]</h3>
+          </div>
+          <div class="card">
+            <span class="tag">Design &amp; Content</span>
+            <h3>[Member Name 5]</h3>
+          </div>
+        </div>
+      </section>
+
+      <!-- CONTACT PAGE -->
+      <section id="contact" class="page">
+        <p class="eyebrow">Get in touch</p>
+        <h1>Contact us</h1>
+        <p class="lede">
+          [Add a short sentence inviting visitors to reach out — e.g. for feedback
+          on the project, questions about the course assignment, etc.]
+        </p>
+
+        <div class="contact-grid">
+          <div class="contact-info">
+            <h2>Details</h2>
+            <dl>
+              <dt>Group</dt>
+              <dd>[GROUP NAME]</dd>
+
+              <dt>Course</dt>
+              <dd>[COURSE TITLE]</dd>
+
+              <dt>Email</dt>
+              <dd>[group-email@example.com]</dd>
+
+              <dt>Leader</dt>
+              <dd>[Member Name 1]</dd>
+            </dl>
+          </div>
+
+          <form class="contact-form" id="contact-form">
+            <h2>Send a message</h2>
+
+            <label for="name">Name</label>
+            <input type="text" id="name" name="name" required>
+
+            <label for="email">Email</label>
+            <input type="email" id="email" name="email" required>
+
+            <label for="message">Message</label>
+            <textarea id="message" name="message" rows="5" required></textarea>
+
+            <button type="submit">Send message</button>
+            <p id="form-status" role="status"></p>
+          </form>
+        </div>
+      </section>
+
+    </div>
+  </main>
+
+  <footer>
+    <div class="wrapper">
+      <span>© 2026 [GROUP NAME]</span>
+      <span>[COURSE TITLE]</span>
+    </div>
+  </footer>
+
+  <script>
+    document.addEventListener("DOMContentLoaded", () => {
+      const tabs = document.querySelectorAll(".tab");
+      const pages = document.querySelectorAll(".page");
+
+      // Switch between Home / About / Contact sections
+      function showPage(pageId) {
+        pages.forEach(p => p.classList.toggle("page--active", p.id === pageId));
+        tabs.forEach(t => t.classList.toggle("tab--active", t.dataset.page === pageId));
+      }
+
+      tabs.forEach(tab => {
+        tab.addEventListener("click", (e) => {
+          e.preventDefault();
+          showPage(tab.dataset.page);
+          window.scrollTo({ top: 0, behavior: "smooth" });
+        });
+      });
+
+      // Allow direct linking via #home / #about / #contact
+      const initial = window.location.hash.replace("#", "") || "home";
+      if (document.getElementById(initial)) {
+        showPage(initial);
+      }
+
+      // Contact form handling (no backend — just a friendly confirmation)
+      const form = document.getElementById("contact-form");
+      const status = document.getElementById("form-status");
+
+      if (form) {
+        form.addEventListener("submit", (event) => {
+          event.preventDefault();
+          const name = document.getElementById("name").value.trim();
+
+          if (name) {
+            status.textContent = `Thanks, ${name}! Your message has been noted. (This is a static demo form — connect it to a form service such as Formspree to actually receive messages.)`;
+          } else {
+            status.textContent = "Thanks! Your message has been noted.";
+          }
+
+          form.reset();
+        });
+      }
+    });
+  </script>
+
+</body>
+</html>
